@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Sender</title>
+</head>
+<body>
+    <h1>Message Sender</h1>
+    <label for="message">Enter your message:</label>
+    <input type="text" id="message" placeholder="Enter your message"><br>
+
+    <label for="apiUrl">Enter API URL:</label>
+    <input type="text" id="apiUrl" placeholder="Enter API URL"><br>
+
+    <button onclick="sendMessage()">Send Message</button>
+
+    <h4 id="response"></h4>
+
+    <script>
+        function sendMessage() {
+            const message = document.getElementById('message').value;
+            const apiUrl = document.getElementById('apiUrl').value;
+
+            if (!message || !apiUrl) {
+                alert('Please enter both a message and an API URL.');
+                return;
+            }
+
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const responseElement = document.getElementById('response');
+                responseElement.textContent = `Response: ${JSON.stringify(data)}`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const responseElement = document.getElementById('response');
+                responseElement.textContent = `Error: ${error.message}`;
+            });
+        }
+    </script>
+</body>
+</html>
+
